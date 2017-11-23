@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.9)
 
-project(SP2_v21)
+project(OS2_v21)
 
 find_package (Threads)
 
