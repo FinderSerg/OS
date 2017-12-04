@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
     cerr << "PID: " << getpid() << "\n";
     size_t t;
     int m, i;
-    if (argc == 4) {
+    if (argc == 5) {
         t = atoi(argv[1]);
         m = atoi(argv[2]);
         i = atoi(argv[3]);
@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
 
     string theFile;
     stringstream file;
-    file << "../files2/" << i << ".txt";
+    file  << argv[4] << "/files2/" << i << ".txt";
     theFile = file.str();
     genInput(theFile, m);
 

@@ -48,37 +48,41 @@ int main(int argc, char* argv[]) {
     cerr << "main PID: " << getpid() << "\n";
 
     int n = 30, m = 50;
-    if (argc == 3) {
+    if (argc == 6) {
         n = atoi(argv[1]);
         m = atoi(argv[2]);
     }
-    for (int i = 0; i < n; ++i) {
-        stringstream process;
-        process << "./main2 " << clock() << " " << m << " " << i;
-        string command = process.str();
-        system(command.c_str());
+    if(atoi(argv[4]) == 0 || atoi(argv[4]) == 1){
+        for (int i = 0; i < n; ++i) {
+            stringstream process;
+            process << argv[5] << "/main2 " << clock() << " " << m << " " << i << " " << argv[3];
+            string command = process.str();
+            system(command.c_str());
+        }
     }
-    srand(time(NULL));
+    if(atoi(argv[4]) == 0 || atoi(argv[4]) == 2){
+        srand(time(NULL));
 
-    vector<string> files;
+        vector<string> files;
 
-    for (int i = 0; i < n; ++i) {
-        stringstream file;
-        file << "../files1/" << i << ".txt";
-        files.push_back(file.str());
-        genInput(files[i], m);
+        for (int i = 0; i < n; ++i) {
+            stringstream file;
+            file << argv[3] << "/files1/" << i << ".txt";
+            files.push_back(file.str());
+            genInput(files[i], m);
+        }
+
+        thread* thr = new thread[n];
+
+        for (int i = 0; i < n; ++i) {
+            thr[i] = thread(threadFunction, clock(), files[i]);
+        }
+
+        for (int i = 0; i < n; ++i) {
+            thr[i].join();
+        }
+
+        delete[] thr;
     }
-
-    thread* thr = new thread[n];
-
-    for (int i = 0; i < n; ++i) {
-        thr[i] = thread(threadFunction, clock(), files[i]);
-    }
-
-    for (int i = 0; i < n; ++i) {
-        thr[i].join();
-    }
-
-    delete[] thr;
     return 0;
 }
